@@ -26,6 +26,7 @@ public class UserInfo {
     private String username;
     private String password;
     private String fullname;
+    private String token;
     
    
 
@@ -90,6 +91,14 @@ public class UserInfo {
 	public String toString() {
 		return "UserInfo [id=" + id + ", username=" + username + ", password=" + password + ", fullname=" + fullname
 				+ ", roles=" + roles + "]";
+	}
+
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
 	}
 	
 	

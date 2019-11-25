@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 import bzh.muzuliou.config.JwtToken;
 import bzh.muzuliou.entity.JwtRequest;
-import bzh.muzuliou.entity.UserInfo;
-import bzh.muzuliou.reprository.UserInfoRepository;
 import bzh.muzuliou.service.JwtUserDetailsService;
 
 import org.springframework.security.authentication.AuthenticationManager;
@@ -34,22 +32,25 @@ public class AuthController {
     @RequestMapping(value = "/authenticate", method = RequestMethod.POST)
     public ResponseEntity<?> createAuthenticationToken(@RequestBody JwtRequest authenticationRequest) throws Exception {
 
-    	  System.out.println(authenticationRequest.toString());
+    	  System.out.println("auth :" +authenticationRequest.getUsername());
+    
       authenticate(authenticationRequest.getUsername(), authenticationRequest.getPassword());
  
         final UserDetails userDetails = jwtUserDetailsService
 
                 .loadUserByUsername(authenticationRequest.getUsername());
-        
-        UserInfo user = jwtUserDetailsService.getUserByUsername(authenticationRequest.getUsername());
-        user.setPassword("");
+  	  System.out.println("userDetails :" +userDetails.toString()); 
+      //  UserInfo user = jwtUserDetailsService.getUserByUsername(authenticationRequest.getUsername());
+      //  user.setPassword("");
+      
       
         final String token = jwtToken.generateToken(userDetails);
+    //    user.setToken("Bearer "+ token);
         HttpHeaders headers = new HttpHeaders();
         headers.add(HttpHeaders.CONTENT_TYPE, "application/json; charset=UTF-8");
         headers.add(HttpHeaders.AUTHORIZATION, "Bearer "+token);
         return ResponseEntity.ok()
-        		.headers(headers).body(user);
+        		.headers(headers).body(userDetails);
 
     }
 
@@ -67,6 +68,8 @@ public class AuthController {
 
             throw new Exception("INVALID_CREDENTIALS", e);
 
+        } catch ( Exception e) {
+        	 throw new Exception("Unknow error", e);
         }
 
     }
