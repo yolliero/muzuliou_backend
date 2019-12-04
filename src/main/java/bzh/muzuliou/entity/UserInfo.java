@@ -1,7 +1,6 @@
 package bzh.muzuliou.entity;
 
 
-import java.util.Collection;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
